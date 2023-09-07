@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "packageManager": "npm@9.6.7",
+  "scripts": {
+    "build": "webpack --mode production"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.21",
+    "ts-loader": "^9.4.4",
+    "tsc": "^2.0.4",
+    "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  }
+}
