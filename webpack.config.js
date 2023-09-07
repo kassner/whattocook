@@ -3,7 +3,7 @@ const path = require('path');
 // @TODO WebpackManifestPlugin
 
 module.exports = {
-    entry: './src/main/js/app.ts',
+    entry: './src/main/js/App.tsx',
     module: {
         rules: [
             {
