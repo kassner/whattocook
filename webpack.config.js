@@ -1,4 +1,5 @@
 const path = require('path');
+const autoprefixer = require('autoprefixer');
 
 // @TODO WebpackManifestPlugin
 
@@ -11,6 +12,22 @@ module.exports = {
                 use: 'ts-loader',
                 exclude: /node_modules/,
             },
+            {
+                test: /\.(scss)$/,
+                use: [
+                    {loader: 'style-loader'},
+                    {loader: 'css-loader'},
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                plugins: [autoprefixer]
+                            }
+                        }
+                    },
+                    {loader: 'sass-loader'}
+                ]
+            }
         ],
     },
     resolve: {
