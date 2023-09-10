@@ -23,18 +23,19 @@ const App = () => {
     const [recipe, setRecipe] = useState<Recipe|null>(null);
 
     const loadRecipe = (event: any) => {
-        console.log("@TODO loadRecipe");
-        const recipe : Recipe = {
-            id: 123,
-            name: 'Fish tacos',
-            description: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras viverra massa nec libero varius, et fermentum ex aliquam. Proin vitae arcu tortor. Sed sollicitudin et magna vitae tristique. Etiam non vestibulum sem. Quisque elementum, justo vel efficitur dapibus, mauris velit placerat metus, eu posuere nunc metus in nibh. Cras condimentum lectus diam, eget tristique nunc molestie in. Nullam nec arcu facilisis, pretium nisl in, cursus nisi. Aliquam lobortis quam enim, ac faucibus purus dignissim at. Praesent a dui id neque accumsan dapibus eget vel quam. Nunc at nunc interdum, pulvinar nisl vel, imperdiet neque. Nunc luctus massa vitae ligula lacinia iaculis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed mattis placerat est, eget congue nisi fermentum et. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n        In bibendum urna sit amet orci pretium blandit. Etiam dui quam, scelerisque sed lacus et, porta venenatis dolor. Donec a enim mi. Etiam dictum orci eget est iaculis, et dictum ligula porta. In semper felis eget mauris maximus tempus. Maecenas lobortis pretium risus. Praesent a sollicitudin leo. Sed at cursus odio. In interdum nisi quis sem facilisis tristique. Pellentesque blandit mi a lorem accumsan, non dignissim dolor aliquet. Curabitur justo nisl, rutrum quis arcu nec, vulputate fermentum ligula. Vivamus et lectus at quam ornare suscipit ut vel lorem. Vestibulum suscipit pulvinar ornare. Integer varius, lorem ut varius ultricies, tortor urna ullamcorper urna, eget vulputate diam velit eu sapien. Aliquam laoreet nulla at massa posuere, ut varius odio volutpat.",
-            ingredients: [
-                {id: 1, name: "Fish"} as Ingredient,
-                {id: 2, name: "Tortilla"} as Ingredient,
-            ],
-        };
-
-        setRecipe(recipe);
+        // @TODO create session
+        fetch('/recipe')
+            .then(response => response.json())
+            .then((data) => {
+                const recipe : Recipe = data;
+                setRecipe(recipe);
+            })
+            .catch((e) => {
+                // @TODO display error to user
+                console.log("error loading recipe");
+                console.log(e);
+            })
+        ;
     };
 
     if (!recipe) {
@@ -75,7 +76,7 @@ const App = () => {
                             <div className="col col-8">
                                 <div className="card m-1 p-1 h-100">
                                     <h2 className="card-title">Instructions</h2>
-                                    <div className="card-body">{nl2p(recipe.description)}</div>
+                                    <div className="card-body">{nl2p(recipe.instructions)}</div>
                                 </div>
                             </div>
                         </div>

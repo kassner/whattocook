@@ -6,6 +6,6 @@ export type Ingredient = {
 export type Recipe = {
     id: number;
     name: string;
-    description: string;
+    instructions: string;
     ingredients: Array<Ingredient>;
 }
