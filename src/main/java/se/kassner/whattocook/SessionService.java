@@ -1,5 +1,7 @@
 package se.kassner.whattocook;
 
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +14,14 @@ public class SessionService
     private final RecipeRepository recipeRepository;
     private final SessionRepository sessionRepository;
     private final SessionEventRepository sessionEventRepository;
+    private final EntityManager entityManager;
 
-    public SessionService(RecipeRepository recipeRepository, SessionRepository sessionRepository, SessionEventRepository sessionEventRepository)
+    public SessionService(RecipeRepository recipeRepository, SessionRepository sessionRepository, SessionEventRepository sessionEventRepository, EntityManager entityManager)
     {
         this.recipeRepository = recipeRepository;
         this.sessionRepository = sessionRepository;
         this.sessionEventRepository = sessionEventRepository;
+        this.entityManager = entityManager;
     }
 
     public Session get()
@@ -32,7 +36,12 @@ public class SessionService
             return null;
         }
 
-        return sessionRepository.getReferenceById(session.getId());
+        return sessionRepository.findById(session.getId()).orElse(null);
+    }
+
+    private void refresh(Session session)
+    {
+        entityManager.refresh(session);
     }
 
     public void createIfNeeded()
@@ -75,5 +84,36 @@ public class SessionService
         }
 
         return recipeRepository.findById(recipeId).orElse(null);
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    public void removeIngredient(Session session, Ingredient ingredient) throws Exception
+    {
+        // remove ingredient
+        JSONObject ingredientObj = new JSONObject();
+        ingredientObj.accumulate("id", ingredient.getId());
+        ingredientObj.accumulate("name", ingredient.getName());
+
+        JSONObject payload = new JSONObject();
+        payload.accumulate("ingredient", ingredientObj);
+
+        SessionEvent ingredientEvent = new SessionEvent(session, SessionEvent.Type.INGREDIENT_EXCLUDE, payload.toString());
+        sessionEventRepository.save(ingredientEvent);
+
+        // reload session
+        this.refresh(session);
+
+        // assign new recipe
+        Recipe recipe = recipeRepository.findOneRandomWithoutIngredients(session.getExcludedIngredientIds());
+
+        if (recipe == null) {
+            // @TODO no more recipes available. save event?
+            throw new Exception("No more recipes available.");
+        }
+
+        JSONObject recipePayload = new JSONObject();
+        recipePayload.accumulate("recipe_id", recipe.getId());
+        SessionEvent recipeEvent = new SessionEvent(session, SessionEvent.Type.RECIPE_ASSIGN, recipePayload.toString());
+        sessionEventRepository.saveAndFlush(recipeEvent);
     }
 }

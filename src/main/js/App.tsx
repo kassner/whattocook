@@ -3,12 +3,25 @@ import { useState } from 'react';
 import { Recipe, Ingredient } from './Model';
 import './App.scss';
 
-const IngredientEl = (props: {ingredient: Ingredient}) => {
-    const ingredient = props.ingredient;
+const IngredientEl = (props: {ingredient: Ingredient, loadRecipeCallback: any}) => {
+    const { ingredient, loadRecipeCallback } = props;
 
     const removeIngredient = (ingredient: Ingredient) => {
-        console.log('@TODO removeIngredient');
-        console.log(ingredient);
+        fetch('/session/ingredient/' + ingredient.id, {method: 'DELETE'})
+            .then(response => response.json())
+            .then((data) => {
+                if (data !== true) {
+                    alert('Error: ' + data.message);
+                    return;
+                }
+
+                loadRecipeCallback();
+            })
+            .catch((e) => {
+                console.log(e);
+                alert('error' + e);
+            })
+        ;
     };
 
     return (
@@ -22,26 +35,28 @@ const IngredientEl = (props: {ingredient: Ingredient}) => {
 const App = () => {
     const [recipe, setRecipe] = useState<Recipe|null>(null);
 
-    const loadRecipe = (event: any) => {
+    const loadRecipeClick = () => {
         fetch('/session', {method: 'POST'})
-            .then((data) => {
-                fetch('/recipe')
-                    .then(response => response.json())
-                    .then((data) => {
-                        const recipe : Recipe = data;
-                        setRecipe(recipe);
-                    })
-                    .catch((e) => {
-                        // @TODO display error to user
-                        console.log("error loading recipe");
-                        console.log(e);
-                    })
-                ;
+            .then(() => {
+                loadRecipe();
             })
             .catch((e) => {
-                // @TODO display error to user
-                console.log("error loading recipe");
                 console.log(e);
+                alert('/session error: ' + e);
+            })
+        ;
+    };
+
+    const loadRecipe = () => {
+        fetch('/session/recipe')
+            .then(response => response.json())
+            .then((data) => {
+                const recipe : Recipe = data;
+                setRecipe(recipe);
+            })
+            .catch((e) => {
+                console.log(e);
+                alert('/session/recipe error: ' + e);
             })
         ;
     };
@@ -52,7 +67,7 @@ const App = () => {
                 <div className="row mt-20 justify-content-center align-items-center">
                     <div className="p-5 bg-body-tertiary rounded-3 text-center">
                         <h1 className="display-5">What to cook today?</h1>
-                        <button className="btn btn-primary btn-lg mt-5" type="button" onClick={loadRecipe}>Give me a recipe</button>
+                        <button className="btn btn-primary btn-lg mt-5" type="button" onClick={loadRecipeClick}>Give me a recipe</button>
                     </div>
                 </div>
             </div>
@@ -75,7 +90,7 @@ const App = () => {
                                     <div className="card-body">
                                         <ul className="list-group">
                                             {recipe.ingredients.map((element : Ingredient) : any => {
-                                                return <IngredientEl ingredient={element} />;
+                                                return <IngredientEl key={element.id} ingredient={element} loadRecipeCallback={loadRecipe} />;
                                             })}
                                         </ul>
                                     </div>

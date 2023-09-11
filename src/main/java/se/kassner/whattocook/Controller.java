@@ -1,18 +1,19 @@
 package se.kassner.whattocook;
 
+import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class Controller
 {
+    private final IngredientRepository ingredientRepository;
     private final SessionService sessionService;
 
-    public Controller(SessionService sessionService)
+    public Controller(IngredientRepository ingredientRepository, SessionService sessionService)
     {
+        this.ingredientRepository = ingredientRepository;
         this.sessionService = sessionService;
     }
 
@@ -23,7 +24,7 @@ public class Controller
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(value = "/recipe", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/session/recipe", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Recipe> getRecipe()
     {
         Session session = sessionService.get();
@@ -34,5 +35,28 @@ public class Controller
 
         Recipe recipe = sessionService.getRecipe(session);
         return ResponseEntity.ok(recipe);
+    }
+
+    @DeleteMapping(value = "/session/ingredient/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> removeIngredient(@PathVariable("id") Long id)
+    {
+        Session session = sessionService.get();
+
+        if (session == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Ingredient ingredient = ingredientRepository.getReferenceById(id);
+
+        try {
+            sessionService.removeIngredient(session, ingredient);
+        } catch (Exception e) {
+            JSONObject responseObj = new JSONObject();
+            responseObj.accumulate("message", e.getMessage());
+
+            return ResponseEntity.status(409).body(responseObj.toString());
+        }
+
+        return ResponseEntity.ok("true");
     }
 }

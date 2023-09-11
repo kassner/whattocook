@@ -5,6 +5,8 @@ import org.json.JSONObject;
 import org.springframework.lang.NonNull;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @EntityListeners(SessionEntityListener.class)
@@ -25,6 +27,9 @@ public class Session
 
     @Transient
     private LocalDateTime timeoutAt;
+
+    @Transient
+    private final List<Long> excludedIngredientIds = new ArrayList<>();
 
     public Session()
     {
@@ -68,10 +73,21 @@ public class Session
             JSONObject js = new JSONObject(event.getPayload());
             this.timeoutAt = LocalDateTime.parse(js.getString("timeout"));
         }
+
+        if (event.getEventType() == SessionEvent.Type.INGREDIENT_EXCLUDE && event.getPayload() != null) {
+            JSONObject js = new JSONObject(event.getPayload());
+            JSONObject ingredientJs = js.getJSONObject("ingredient");
+            this.excludedIngredientIds.add(ingredientJs.getLong("id"));
+        }
     }
 
     public Long getRecipeId()
     {
         return recipeId;
+    }
+
+    public List<Long> getExcludedIngredientIds()
+    {
+        return excludedIngredientIds;
     }
 }

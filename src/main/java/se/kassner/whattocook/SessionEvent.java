@@ -78,7 +78,8 @@ public class SessionEvent
     public enum Type
     {
         TIMEOUT_SET("timeout.set"),
-        RECIPE_ASSIGN("recipe.assign");
+        RECIPE_ASSIGN("recipe.assign"),
+        INGREDIENT_EXCLUDE("ingredient.exclude");
 
         public final String dbType;
 
