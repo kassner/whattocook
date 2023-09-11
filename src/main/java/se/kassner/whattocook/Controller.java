@@ -1,9 +1,12 @@
 package se.kassner.whattocook;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController
 public class Controller
@@ -58,5 +61,20 @@ public class Controller
         }
 
         return ResponseEntity.ok("true");
+    }
+
+    @GetMapping(value = "/session/history", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getHistory()
+    {
+        Session session = sessionService.get();
+
+        if (session == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        JSONArray jsonResponse = new JSONArray(new ArrayList<JSONObject>());
+        jsonResponse.putAll(sessionService.getEvents(session));
+
+        return ResponseEntity.ok(jsonResponse.toString());
     }
 }

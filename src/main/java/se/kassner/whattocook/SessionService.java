@@ -7,17 +7,22 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class SessionService
 {
+    private final IngredientRepository ingredientRepository;
     private final RecipeRepository recipeRepository;
     private final SessionRepository sessionRepository;
     private final SessionEventRepository sessionEventRepository;
     private final EntityManager entityManager;
 
-    public SessionService(RecipeRepository recipeRepository, SessionRepository sessionRepository, SessionEventRepository sessionEventRepository, EntityManager entityManager)
+    public SessionService(IngredientRepository ingredientRepository, RecipeRepository recipeRepository, SessionRepository sessionRepository, SessionEventRepository sessionEventRepository, EntityManager entityManager)
     {
+        this.ingredientRepository = ingredientRepository;
         this.recipeRepository = recipeRepository;
         this.sessionRepository = sessionRepository;
         this.sessionEventRepository = sessionEventRepository;
@@ -115,5 +120,45 @@ public class SessionService
         recipePayload.accumulate("recipe_id", recipe.getId());
         SessionEvent recipeEvent = new SessionEvent(session, SessionEvent.Type.RECIPE_ASSIGN, recipePayload.toString());
         sessionEventRepository.saveAndFlush(recipeEvent);
+    }
+
+    public List<JSONObject> getEvents(Session session)
+    {
+        return sessionEventRepository
+            .findAllForHistory(session.getId())
+            .stream()
+            .map(this::convertEventToHistoryEntry)
+            .filter(Objects::nonNull)
+            .toList();
+    }
+
+    private JSONObject convertEventToHistoryEntry(SessionEvent event)
+    {
+        String description = "";
+        String type = "";
+
+        switch (event.getEventType()) {
+            case TIMEOUT_SET -> {
+                return null;
+            }
+            case RECIPE_ASSIGN -> {
+                JSONObject payload = new JSONObject(event.getPayload());
+                Recipe recipe = recipeRepository.getReferenceById(payload.getLong("recipe_id"));
+                type = "Recipe assigned";
+                description = recipe.getName();
+            }
+            case INGREDIENT_EXCLUDE -> {
+                JSONObject payload = new JSONObject(event.getPayload());
+                Ingredient ingredient = ingredientRepository.getReferenceById(payload.getJSONObject("ingredient").getLong("id"));
+                type = "Ingredient excluded";
+                description = ingredient.getName();
+            }
+        }
+
+        return new JSONObject()
+            .accumulate("type", type)
+            .accumulate("description", description)
+            .accumulate("date", event.getCreatedAt().atZone(ZoneOffset.UTC).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME))
+        ;
     }
 }

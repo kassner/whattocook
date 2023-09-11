@@ -9,3 +9,9 @@ export type Recipe = {
     instructions: string;
     ingredients: Array<Ingredient>;
 }
+
+export type Event = {
+    type: string;
+    description: string;
+    date: string;
+};

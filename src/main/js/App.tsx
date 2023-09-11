@@ -1,9 +1,10 @@
 import { createRoot } from 'react-dom/client';
-import { useState } from 'react';
-import { Recipe, Ingredient } from './Model';
+import { useEffect, useState } from 'react';
+import { Recipe, Ingredient, Event } from './Model';
 import './App.scss';
+import TimeAgo from 'react-timeago';
 
-const IngredientEl = (props: {ingredient: Ingredient, loadRecipeCallback: any}) => {
+const IngredientEl = (props: {ingredient: Ingredient, loadRecipeCallback: CallableFunction}) => {
     const { ingredient, loadRecipeCallback } = props;
 
     const removeIngredient = (ingredient: Ingredient) => {
@@ -34,11 +35,13 @@ const IngredientEl = (props: {ingredient: Ingredient, loadRecipeCallback: any}) 
 
 const App = () => {
     const [recipe, setRecipe] = useState<Recipe|null>(null);
+    const [history, setHistory] = useState<Event[]>([]);
 
     const loadRecipeClick = () => {
         fetch('/session', {method: 'POST'})
             .then(() => {
                 loadRecipe();
+                loadHistory();
             })
             .catch((e) => {
                 console.log(e);
@@ -61,6 +64,20 @@ const App = () => {
         ;
     };
 
+    const loadHistory = () => {
+        fetch('/session/history')
+            .then(response => response.json())
+            .then((data) => {
+                const history : Event[] = data;
+                setHistory(history);
+            })
+            .catch((e) => {
+                console.log(e);
+                alert('/session/history error: ' + e);
+            })
+        ;
+    };
+
     if (!recipe) {
         return (
             <div className="container h-100">
@@ -76,12 +93,21 @@ const App = () => {
 
     return (
         <div className="container h-100">
-            <div className="row h-100 pt-2" id="recipe">
+            <div className="row h-100 pt-2">
                 <div className="col col-2 h-100">
-                    <p>@TODO session history</p>
+                    <ul className="list-group" id="session-history">
+                        <li className="list-group-item">Session history</li>
+                        {history.map((element : Event) : any => {
+                            return <li className="list-group-item p-1">
+                                <p className="type">{element.type}</p>
+                                {element.description && <p className="description">{element.description}</p>}
+                                <TimeAgo date={element.date} />
+                            </li>
+                        })}
+                    </ul>
                 </div>
                 <div className="col col-10">
-                    <div className="container card pb-4">
+                    <div className="container card pb-4" id="recipe">
                         <h1 className="card-title">{recipe.name}</h1>
                         <div className="row">
                             <div className="col col-4">
@@ -90,7 +116,10 @@ const App = () => {
                                     <div className="card-body">
                                         <ul className="list-group">
                                             {recipe.ingredients.map((element : Ingredient) : any => {
-                                                return <IngredientEl key={element.id} ingredient={element} loadRecipeCallback={loadRecipe} />;
+                                                return <IngredientEl key={element.id} ingredient={element} loadRecipeCallback={() => {
+                                                    loadRecipe();
+                                                    loadHistory();
+                                                }} />;
                                             })}
                                         </ul>
                                     </div>
