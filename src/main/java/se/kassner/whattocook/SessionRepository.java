@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RecipeRepository extends JpaRepository<Recipe, Long>
+public interface SessionRepository extends JpaRepository<Session, Long>
 {
-    @Query("SELECT r FROM Recipe r ORDER BY RANDOM() LIMIT 1")
-    public Recipe findOneRandom();
+    @Query("SELECT s FROM Session s ORDER BY s.createdAt DESC LIMIT 1")
+    public Session getLast();
 }

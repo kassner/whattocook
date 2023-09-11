@@ -27,6 +27,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.springframework.session:spring-session-core")
+	implementation("org.json:json:20230618")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

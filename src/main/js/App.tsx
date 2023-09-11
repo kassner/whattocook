@@ -23,12 +23,20 @@ const App = () => {
     const [recipe, setRecipe] = useState<Recipe|null>(null);
 
     const loadRecipe = (event: any) => {
-        // @TODO create session
-        fetch('/recipe')
-            .then(response => response.json())
+        fetch('/session', {method: 'POST'})
             .then((data) => {
-                const recipe : Recipe = data;
-                setRecipe(recipe);
+                fetch('/recipe')
+                    .then(response => response.json())
+                    .then((data) => {
+                        const recipe : Recipe = data;
+                        setRecipe(recipe);
+                    })
+                    .catch((e) => {
+                        // @TODO display error to user
+                        console.log("error loading recipe");
+                        console.log(e);
+                    })
+                ;
             })
             .catch((e) => {
                 // @TODO display error to user
