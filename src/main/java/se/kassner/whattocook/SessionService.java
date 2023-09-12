@@ -49,7 +49,7 @@ public class SessionService
         entityManager.refresh(session);
     }
 
-    public void createIfNeeded()
+    public void createIfNeeded() throws Exception
     {
         Session session = this.get();
 
@@ -58,8 +58,14 @@ public class SessionService
         }
     }
 
-    private void create()
+    @Transactional(rollbackOn = Exception.class)
+    private void create() throws Exception
     {
+        Recipe recipe = recipeRepository.findOneRandom();
+        if (recipe == null) {
+            throw new Exception("No recipes available");
+        }
+
         Session session = new Session(LocalDateTime.now(ZoneOffset.UTC));
         sessionRepository.save(session);
 
@@ -71,7 +77,6 @@ public class SessionService
         sessionEventRepository.save(timeoutEvent);
 
         // assign recipe
-        Recipe recipe = recipeRepository.findOneRandom();
         JSONObject payload = new JSONObject();
         payload.accumulate("recipe_id", recipe.getId());
         SessionEvent recipeAssignEvent = new SessionEvent(session, SessionEvent.Type.RECIPE_ASSIGN, payload.toString());

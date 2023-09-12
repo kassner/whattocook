@@ -39,9 +39,23 @@ const App = () => {
 
     const loadRecipeClick = () => {
         fetch('/session', {method: 'POST'})
-            .then(() => {
-                loadRecipe();
-                loadHistory();
+            .then(async (response) => {
+                if (response.status > 399) {
+                    response.json()
+                        .then((data) => {
+                            if (data.message != undefined) {
+                                alert(data.message);
+                            } else {
+                                alert("Error creating session");
+                            }
+                        }).catch(() => {
+                            alert("Error creating session");
+                        })
+                    ;
+                } else {
+                    loadRecipe();
+                    loadHistory();
+                }
             })
             .catch((e) => {
                 console.log(e);

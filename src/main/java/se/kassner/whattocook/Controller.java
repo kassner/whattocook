@@ -23,8 +23,15 @@ public class Controller
     @PostMapping(value = "/session", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createSession()
     {
-        sessionService.createIfNeeded();
-        return ResponseEntity.noContent().build();
+        try {
+            sessionService.createIfNeeded();
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            JSONObject responseObj = new JSONObject();
+            responseObj.accumulate("message", e.getMessage());
+
+            return ResponseEntity.internalServerError().body(responseObj.toString());
+        }
     }
 
     @GetMapping(value = "/session/recipe", produces = MediaType.APPLICATION_JSON_VALUE)
