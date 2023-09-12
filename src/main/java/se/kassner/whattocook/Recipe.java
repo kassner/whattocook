@@ -13,9 +13,11 @@ public class Recipe
     @SequenceGenerator(name = "recipe_id_seq", sequenceName = "recipe_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recipe_id_seq")
     private long id;
+
     @NonNull
     @Column(name = "name")
     private String name;
+
     @Column(name = "instructions")
     private String instructions;
 

@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Recipe, Ingredient, Event } from './Model';
 import './App.scss';
 import TimeAgo from 'react-timeago';
@@ -101,7 +101,7 @@ const App = () => {
                             return <li className="list-group-item p-1">
                                 <p className="type">{element.type}</p>
                                 {element.description && <p className="description">{element.description}</p>}
-                                <TimeAgo date={element.date} />
+                                <TimeAgo date={element.date} live={true} minPeriod={10} />
                             </li>
                         })}
                     </ul>
