@@ -1,0 +1,34 @@
+name: release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: "Determine tag"
+        run: "echo \"RELEASE_TAG=${GITHUB_REF#refs/tags/}\" >> $GITHUB_ENV"
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: 'gradle'
+
+      - run: ./gradlew -P version=${{ env.RELEASE_TAG }} bootBuildImage --no-daemon --imageName="ghcr.io/${{ github.repository }}:${{ env.RELEASE_TAG }}"
+
+      - uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: docker push ghcr.io/${{ github.repository }}:${{ env.RELEASE_TAG }}
