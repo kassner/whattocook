@@ -38,6 +38,6 @@ out/
 
 ### Frontend ###
 node_modules/
-src/main/resources/static/js/
+src/main/resources/static/dist/
 .frontend-gradle-plugin/
 node/

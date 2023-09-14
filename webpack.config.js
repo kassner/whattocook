@@ -1,10 +1,13 @@
 const path = require('path');
 const autoprefixer = require('autoprefixer');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 // @TODO WebpackManifestPlugin
 
 module.exports = {
-    entry: './src/main/js/App.tsx',
+    entry: {
+        app: './src/main/js/app/main.tsx',
+    },
     module: {
         rules: [
             {
@@ -15,7 +18,7 @@ module.exports = {
             {
                 test: /\.(scss)$/,
                 use: [
-                    {loader: 'style-loader'},
+                    MiniCssExtractPlugin.loader,
                     {loader: 'css-loader'},
                     {
                         loader: 'postcss-loader',
@@ -27,15 +30,22 @@ module.exports = {
                     },
                     {loader: 'sass-loader'}
                 ]
-            }
+            },
         ],
     },
+    plugins: [
+        new MiniCssExtractPlugin(),
+    ],
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
     },
     output: {
-        path: path.resolve('./src/main/resources/static/js/'),
-        publicPath: 'js/',
-        filename: 'bundle.js', // @TODO use [contenthash]
+        path: path.resolve('./src/main/resources/static/dist/'),
+        publicPath: 'dist/',
+        filename: '[name].js', // @TODO use [contenthash]
+    },
+    watchOptions: {
+        aggregateTimeout: 1000,
+        ignored: '**/node_modules/',
     },
 };
