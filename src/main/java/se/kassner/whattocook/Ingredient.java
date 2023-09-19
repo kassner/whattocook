@@ -10,8 +10,8 @@ import java.util.Set;
 public class Ingredient
 {
     @Id
-    @SequenceGenerator(name = "recipe_id_seq", sequenceName = "recipe_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recipe_id_seq")
+    @SequenceGenerator(name = "ingredient_id_seq", sequenceName = "ingredient_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ingredient_id_seq")
     private long id;
 
     @NonNull
