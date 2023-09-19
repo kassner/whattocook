@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>What to cook?</title>
+    <link rel="stylesheet" href="/dist/app.css" />
+</head>
+<body class="bg-base-200">
+<header class="navbar">
+    <div class="flex-1">
+        <a class="btn btn-ghost normal-case text-xl" th:href="@{/}">What to cook?</a>
+    </div>
+    <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+            <li><a th:href="@{/manage/recipe}">Recipes</a></li>
+        </ul>
+    </div>
+</header>
+<main id="app"></main>
+<script src="/dist/app.js"></script>
+</body>
+</html>

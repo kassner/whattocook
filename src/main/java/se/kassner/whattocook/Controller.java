@@ -38,12 +38,15 @@ public class Controller
     public ResponseEntity<Recipe> getRecipe()
     {
         Session session = sessionService.get();
-
         if (session == null) {
             return ResponseEntity.notFound().build();
         }
 
         Recipe recipe = sessionService.getRecipe(session);
+        if (recipe == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         return ResponseEntity.ok(recipe);
     }
 

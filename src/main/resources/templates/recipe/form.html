@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/manage :: layout(~{::title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title th:text="${form_title} + ' &raquo; What to Cook?'"></title>
+</head>
+<body>
+<main>
+    <form th:action="${form_url}" method="POST" class="form form-add" th:object="${recipeForm}">
+        <div class="flex">
+            <h1 class="flex-grow" th:text="${form_title}"></h1>
+            <button class="btn-add self-center">Save</button>
+        </div>
+        <dl>
+            <dt><label for="form_name">Name</label></dt>
+            <dd><input th:field="*{name}" id="form_name" name="name" type="text" placeholder="i.e.: Chicken Tikka Masala" required /></dd>
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</span>
+
+            <dt><label for="form_instructions">Instructions</label></dt>
+            <dd><textarea th:field="*{instructions}" id="form_instructions" name="instructions"></textarea></dd>
+            <span th:if="${#fields.hasErrors('instructions')}" th:errors="*{instructions}">Instructions Error</span>
+
+            <dt><label for="ingredients">Ingredients</label></dt>
+            <dd id="ingredients-container">
+                <ul id="ingredients">
+                    <li th:data-id="${stat.index}" th:each="ingredient, stat : ${recipeForm.getIngredients()}" class="join">
+                        <label th:for="'ingredient_' + ${stat.index}" class="join-item"><span>Ingredient</span></label>
+                        <input type="text" th:id="'ingredient_' + ${stat.index}" name="ingredients[]" th:value="${ingredient}" class="join-item" />
+                        <button type="button" class="join-item btn-remove" onclick="RecipeForm.removeIngredient(this.parentElement)">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    </li>
+                </ul>
+                <button type="button" id="ingredient-add" onclick="RecipeForm.addIngredient()">Add</button>
+            </dd>
+        </dl>
+        <button type="submit" class="btn-add">Save</button>
+        <a th:href="@{/manage/recipe}" class="btn-cancel">Cancel</a>
+    </form>
+</main>
+</body>
+</html>

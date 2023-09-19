@@ -1,8 +1,6 @@
-import org.gradle.api.internal.tasks.compile.CompileJavaBuildOperationType
 import java.nio.file.Files
 import kotlin.io.path.Path
 import org.siouan.frontendgradleplugin.infrastructure.gradle.InstallFrontendTask
-import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
 	java
@@ -24,6 +22,8 @@ repositories {
 dependencies {
 	implementation("org.postgresql:postgresql")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.springframework.session:spring-session-core")

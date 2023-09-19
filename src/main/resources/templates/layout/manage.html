@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout (title, content)" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="${title}">Layout Title</title>
+    <link rel="stylesheet" href="/dist/manage.css" />
+</head>
+<body>
+<header class="navbar bg-base-100">
+    <div class="flex-1">
+        <a class="btn btn-ghost normal-case text-xl" th:href="@{/}">What to cook?</a>
+    </div>
+    <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+            <li><a th:href="@{/manage/recipe}">Recipes</a></li>
+        </ul>
+    </div>
+</header>
+<div class="container mx-auto">
+    <div class="alert alert-success" th:text="${success}" th:if="${success}"></div>
+    <div class="alert alert-error" th:text="${error}" th:if="${error}"></div>
+    <main th:replace="${content}"/>
+</div>
+<script src="/dist/manage.js"></script>
+</body>
+</html>

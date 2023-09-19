@@ -7,6 +7,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
     entry: {
         app: './src/main/js/app/main.tsx',
+        manage: './src/main/js/manage/main.ts',
     },
     module: {
         rules: [
@@ -41,7 +42,7 @@ module.exports = {
     },
     output: {
         path: path.resolve('./src/main/resources/static/dist/'),
-        publicPath: 'dist/',
+        publicPath: '/dist/',
         filename: '[name].js', // @TODO use [contenthash]
     },
     watchOptions: {

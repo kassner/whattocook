@@ -31,6 +31,11 @@ public class Ingredient
         this.name = name;
     }
 
+    public Ingredient(@NonNull String name)
+    {
+        this.name = name;
+    }
+
     public long getId()
     {
         return id;

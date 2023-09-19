@@ -2,7 +2,8 @@
   "private": true,
   "packageManager": "npm@9.6.7",
   "scripts": {
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "watch": "webpack --mode production --watch --progress"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",

@@ -84,7 +84,7 @@ const App = () => {
 
     if (!recipe) {
         return (
-            <div className="hero min-h-screen bg-base-200">
+            <div className="hero min-h-screen">
                 <div className="hero-content text-center">
                     <div className="max-w-md">
                         <h1 className="text-5xl font-bold">What to cook today?</h1>
@@ -99,7 +99,7 @@ const App = () => {
     return (
         <div className="container mx-auto pt-2">
             <div className="grid grid-cols-6 gap-2 flex items-stretch">
-                <div className="border-gray-100 shadow rounded-lg">
+                <div className="border-gray-100 shadow rounded-lg bg-white">
                     <div className="w-full p-2">
                         <h2 className="mt-0 text-xl pb-2 text-zinc-500">Session history</h2>
                         {history.map((element : Event) : any => {
@@ -116,7 +116,7 @@ const App = () => {
                         })}
                     </div>
                 </div>
-                <div className="col-span-5 card w-full border-gray-100 shadow rounded-lg">
+                <div className="col-span-5 card w-full border-gray-100 shadow rounded-lg bg-white">
                     <div className="card-body p-5">
                         <h1 className="mt-0 text-4xl pb-2 text-zinc-950">{recipe.name}</h1>
                         <div className="grid-cols-12 grid gap-4">
@@ -156,5 +156,5 @@ const nl2p = (text: string) => {
     });
 };
 
-const root = createRoot(document.body as HTMLElement);
+const root = createRoot(document.getElementById("app") as HTMLElement);
 root.render(<App />);

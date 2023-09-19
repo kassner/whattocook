@@ -27,6 +27,7 @@ public class Recipe
         joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "ingredient_id", referencedColumnName = "id")
     )
+    @OrderBy("name ASC")
     private Set<Ingredient> ingredients;
 
     public Recipe()
@@ -60,5 +61,20 @@ public class Recipe
     public Set<Ingredient> getIngredients()
     {
         return ingredients;
+    }
+
+    public void setName(@NonNull String name)
+    {
+        this.name = name;
+    }
+
+    public void setInstructions(String instructions)
+    {
+        this.instructions = instructions;
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients)
+    {
+        this.ingredients = ingredients;
     }
 }

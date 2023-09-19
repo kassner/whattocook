@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/manage :: layout(~{::title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Manage Recipes &raquo; What to Cook?</title>
+</head>
+<body>
+<main>
+    <div class="flex">
+        <h1 class="flex-grow">Manage recipes</h1>
+        <a class="btn-add self-center" th:href="@{/manage/recipe/add}">Add</a>
+    </div>
+    <table class="table table-pin-rows table-pin-cols w-full">
+        <thead>
+            <tr>
+                <th class="id">ID</th>
+                <th>Name</th>
+                <th class="actions"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="recipe: ${recipes}">
+                <td th:text="${recipe.getId()}"></td>
+                <td th:text="${recipe.getName()}"></td>
+                <td class="actions">
+                    <a class="btn-edit" th:href="@{/manage/recipe/{id}/edit(id=${recipe.getId()})}">Edit</a>
+                    <form th:action="@{/manage/recipe/{id}/delete(id=${recipe.getId()})}" method="POST">
+                        <button class="btn-delete w-full">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

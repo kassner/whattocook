@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+h1 {
+    @apply text-4xl font-bold pb-4;
+}
+
+main {
+    @apply p-2;
+}
+
+.btn-add {
+    @apply btn btn-sm btn-neutral;
+}
+
+.btn-cancel {
+    @apply btn btn-sm;
+}
+
+.alert {
+    @apply mb-8;
+}
+
+.table {
+    thead {
+        tr {
+            @apply text-gray-600 uppercase text-sm leading-normal;
+
+            th {
+                @apply bg-zinc-200;
+
+                &.id {
+                    @apply w-8;
+                }
+
+                &.actions {
+                    @apply w-40;
+                }
+            }
+        }
+    }
+
+    tbody {
+        td.actions {
+            @apply flex space-x-2;
+
+            * {
+                @apply flex-auto;
+            }
+
+            .btn-edit {
+                @apply btn btn-xs btn-neutral;
+            }
+
+            .btn-delete {
+                @apply btn btn-xs btn-error;
+            }
+        }
+    }
+}
+
+.form-add {
+    dl {
+        dt {
+            label {
+                @apply text-gray-600 uppercase text-sm leading-normal;
+            }
+        }
+
+        dd {
+            @apply mb-4;
+        }
+    }
+
+    input {
+        @apply input input-bordered w-full;
+    }
+
+    textarea {
+        @apply input input-bordered w-full h-48;
+    }
+
+    #ingredients-container {
+        @apply p-4 border border-base-content bg-base-100 rounded-md border-opacity-20;
+
+        #ingredients {
+            @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-1 pb-1;
+
+            li {
+                @apply grow;
+
+                label {
+                    @apply bg-gray-100 join-item input input-bordered flex items-center rounded-r-none;
+                }
+
+                .btn-remove {
+                    @apply btn btn-error rounded-l-none;
+                }
+            }
+        }
+
+        #ingredient-add {
+            @apply btn btn-sm btn-outline;
+        }
+    }
+}

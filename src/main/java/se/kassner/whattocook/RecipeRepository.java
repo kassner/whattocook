@@ -18,4 +18,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long>
         nativeQuery = true
     )
     public Recipe findOneRandomWithoutIngredients(@Param("ingredient_ids") List<Long> excludedIngredientIds);
+
+    @Query("SELECT r FROM Recipe r ORDER BY r.name ASC")
+    public List<Recipe> findAllForListing();
 }
