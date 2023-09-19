@@ -30,7 +30,7 @@ public class RecipeForm
         this.id = id;
         this.name = name;
         this.instructions = instructions;
-        this.ingredients = ingredients;
+        this.setIngredients(ingredients);
 
         if (this.ingredients.length == 0) {
             this.ingredients = new String[]{""};
@@ -86,6 +86,6 @@ public class RecipeForm
 
     public void setIngredients(String[] ingredients)
     {
-        this.ingredients = ingredients;
+        this.ingredients = Arrays.stream(ingredients).map(String::trim).toArray(String[]::new);
     }
 }
