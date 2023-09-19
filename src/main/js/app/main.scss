@@ -6,3 +6,23 @@ html, body {
     width: 100%;
     height: 100%;
 }
+
+main {
+    @apply p-2;
+}
+
+article {
+    h1 {
+        @apply text-4xl font-bold pb-4;
+    }
+
+    h2 {
+        @apply text-xl text-zinc-600;
+    }
+}
+
+#history {
+    ol {
+        @apply pt-2;
+    }
+}
