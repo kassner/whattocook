@@ -2,12 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-h1 {
-    @apply text-4xl font-bold pb-4;
-}
-
 body {
     @apply p-2;
+}
+
+h1 {
+    @apply text-4xl font-bold pb-4;
 }
 
 .btn-add {
@@ -25,10 +25,10 @@ body {
 .table {
     thead {
         tr {
-            @apply text-gray-600 uppercase text-sm leading-normal;
+            @apply uppercase text-sm leading-normal;
 
             th {
-                @apply bg-zinc-200;
+                @apply bg-zinc-100 dark:bg-gray-800;
 
                 &.id {
                     @apply w-8;
@@ -43,7 +43,7 @@ body {
 
     tbody {
         tr {
-            @apply hover:bg-zinc-200;
+            @apply hover:bg-zinc-100 dark:hover:bg-gray-800;
         }
 
         td.actions {
@@ -68,7 +68,7 @@ body {
     dl {
         dt {
             label {
-                @apply text-gray-600 uppercase text-sm leading-normal;
+                @apply text-zinc-600 dark:text-zinc-400 uppercase text-sm leading-normal;
             }
         }
 
@@ -95,7 +95,7 @@ body {
                 @apply grow;
 
                 label {
-                    @apply bg-gray-100 join-item input input-bordered flex items-center rounded-r-none;
+                    @apply bg-zinc-100 dark:bg-gray-800 join-item input input-bordered flex items-center rounded-r-none;
                 }
 
                 .btn-remove {

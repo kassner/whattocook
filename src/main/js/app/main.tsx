@@ -99,24 +99,24 @@ const App = () => {
     return (
         <div className="flex flex-col-reverse gap-8 lg:flex-row lg:gap-2 xl:gap-4">
             <div className="lg:w-48" id="history">
-                <h2 className="text-lg text-zinc-600">Session history</h2>
-                <ol className="divide-y divide-zinc-200">
+                <h2 className="text-lg">Session history</h2>
+                <ol className="divide-y divide-gray-200 dark:divide-gray-200/10">
                     {history.map((element : Event) : any => {
                         return <li className="w-full leading-4 py-2">
-                            <p className="text-gray-950 font-lg font-medium">{element.description}</p>
-                            <p className="font-sm">{element.type}</p>
+                            <p className="font-lg font-medium">{element.description}</p>
+                            <p className="text-sm">{element.type}</p>
                             <TimeAgo date={element.date} live={true} minPeriod={10} className="text-sm" />
                         </li>
                     })}
                 </ol>
             </div>
-            <div className="divider divider-gray-100 lg:divider-horizontal" />
+            <div className="divider lg:divider-horizontal" />
             <article className="lg:flex-1">
                 <h1>{recipe.name}</h1>
                 <div className="flex flex-col xl:flex-row">
                     <div className="mb-6 xl:w-64">
                         <h2>Ingredients</h2>
-                        <ul className="mt-1 pl-0 list-none leading-9">
+                        <ul className="mt-2 pl-0 list-none leading-9">
                             {recipe.ingredients.map((ingredient : Ingredient) : any => {
                                 return <li className="pl-0 flex items-stretch" key={ingredient.id}>
                                     <button className="btn btn-square btn-outline btn-error btn-sm" onClick={() => removeIngredient(ingredient)}>
