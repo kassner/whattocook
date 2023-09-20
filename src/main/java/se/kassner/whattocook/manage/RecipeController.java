@@ -9,10 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import se.kassner.whattocook.Ingredient;
-import se.kassner.whattocook.IngredientRepository;
-import se.kassner.whattocook.Recipe;
-import se.kassner.whattocook.RecipeRepository;
+import se.kassner.whattocook.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,14 +19,15 @@ import java.util.Set;
 @RequestMapping("/manage/recipe")
 public class RecipeController
 {
-    private final RecipeRepository recipeRepository;
-
     private final IngredientRepository ingredientRepository;
+    private final RecipeRepository recipeRepository;
+    private final SessionService sessionService;
 
-    public RecipeController(RecipeRepository recipeRepository, IngredientRepository ingredientRepository)
+    public RecipeController(IngredientRepository ingredientRepository, RecipeRepository recipeRepository, SessionService sessionService)
     {
-        this.recipeRepository = recipeRepository;
         this.ingredientRepository = ingredientRepository;
+        this.recipeRepository = recipeRepository;
+        this.sessionService = sessionService;
     }
 
     @GetMapping
@@ -144,10 +142,12 @@ public class RecipeController
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes)
     {
-        // @TODO do not allow delete recipes assigned to an ongoing session
-
         try {
             Recipe recipe = recipeRepository.getReferenceById(id);
+            if (!canDelete(recipe)) {
+                throw new Exception("The recipe cannot be deleted because it is assigned to a session.");
+            }
+
             recipeRepository.delete(recipe);
             redirectAttributes.addFlashAttribute("success", String.format("Recipe %s deleted", recipe.getName()));
         } catch (Exception e) {
@@ -176,5 +176,15 @@ public class RecipeController
         }
 
         return "redirect:/manage/recipe";
+    }
+
+    private boolean canDelete(Recipe recipe)
+    {
+        Session session = sessionService.get();
+        if (session == null) {
+            return true;
+        }
+
+        return !(session.getRecipeId() == recipe.getId());
     }
 }
