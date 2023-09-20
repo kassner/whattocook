@@ -2,8 +2,6 @@ const path = require('path');
 const autoprefixer = require('autoprefixer');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-// @TODO WebpackManifestPlugin
-
 module.exports = {
     entry: {
         app: './src/main/js/app/main.tsx',
@@ -43,7 +41,7 @@ module.exports = {
     output: {
         path: path.resolve('./src/main/resources/static/dist/'),
         publicPath: '/dist/',
-        filename: '[name].js', // @TODO use [contenthash]
+        filename: '[name].js',
     },
     watchOptions: {
         aggregateTimeout: 1000,

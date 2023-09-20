@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <title>What to cook?</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="/dist/app.css" />
+    <link rel="stylesheet" th:href="@{/dist/app.css}" />
 </head>
 <body class="bg-base-100 flex flex-col container mx-auto">
     <header class="navbar">
@@ -18,6 +18,6 @@
         </div>
     </header>
     <main id="app" class="grow"></main>
-    <script src="/dist/app.js"></script>
+    <script th:src="@{/dist/app.js}"></script>
 </body>
 </html>

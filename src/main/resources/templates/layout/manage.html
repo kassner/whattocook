@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title th:replace="${title}">Layout Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="/dist/manage.css" />
+    <link rel="stylesheet" th:href="@{/dist/manage.css}" />
 </head>
 <body class="bg-base-100 flex flex-col container mx-auto">
     <header class="navbar">
@@ -22,6 +22,6 @@
         <div class="alert alert-error" th:text="${error}" th:if="${error}"></div>
         <main th:replace="${content}"/>
     </div>
-    <script src="/dist/manage.js"></script>
+    <script th:src="@{/dist/manage.js}"></script>
 </body>
 </html>
