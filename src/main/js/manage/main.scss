@@ -6,7 +6,7 @@ h1 {
     @apply text-4xl font-bold pb-4;
 }
 
-main {
+body {
     @apply p-2;
 }
 
@@ -35,15 +35,19 @@ main {
                 }
 
                 &.actions {
-                    @apply w-40;
+                    @apply w-20 sm:w-40;
                 }
             }
         }
     }
 
     tbody {
+        tr {
+            @apply hover:bg-zinc-200;
+        }
+
         td.actions {
-            @apply flex space-x-2;
+            @apply flex flex-col space-y-1 sm:flex-row sm:space-x-2 sm:space-y-0;
 
             * {
                 @apply flex-auto;
