@@ -29,6 +29,7 @@ dependencies {
 	implementation("org.springframework.session:spring-session-core")
 	implementation("org.json:json:20230618")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("com.h2database:h2")
 }
 
 tasks.withType<Test> {
@@ -41,7 +42,7 @@ frontend {
 	verboseModeEnabled.set(true)
 }
 
-
+// @TODO assembleFrontend should not run during "./gradlew test"
 tasks.processResources {
 	dependsOn("assembleFrontend")
 }

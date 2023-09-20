@@ -23,6 +23,8 @@ jobs:
           java-version: 17
           cache: 'gradle'
 
+      - run: ./gradlew test --no-daemon
+
       - run: ./gradlew -P version=${{ env.RELEASE_TAG }} bootBuildImage --no-daemon --imageName="ghcr.io/${{ github.repository }}:${{ env.RELEASE_TAG }}"
 
       - uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1

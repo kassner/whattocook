@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  release:
+  test_and_build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -19,6 +19,8 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: 'gradle'
+
+      - run: ./gradlew test --no-daemon
 
       - run: ./gradlew -P version=dev bootBuildImage --no-daemon --imageName="ghcr.io/${{ github.repository }}:dev"
 
