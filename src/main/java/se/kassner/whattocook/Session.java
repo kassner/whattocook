@@ -102,17 +102,4 @@ public class Session
     {
         return excludedIngredientIds;
     }
-
-    @Override
-    public String toString()
-    {
-        return "Session{" +
-            "id=" + id +
-            ", createdAt=" + createdAt +
-            ", events=" + events +
-            ", recipeId=" + recipeId +
-            ", timeoutAt=" + timeoutAt +
-            ", excludedIngredientIds=" + excludedIngredientIds +
-            '}';
-    }
 }
