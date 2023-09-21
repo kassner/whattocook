@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import org.springframework.lang.NonNull;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class Session
 
     public boolean isTimeout()
     {
-        return LocalDateTime.now().isAfter(timeoutAt);
+        return LocalDateTime.now(ZoneOffset.UTC).isAfter(timeoutAt);
     }
 
     @PostLoad
@@ -100,5 +101,18 @@ public class Session
     public List<Long> getExcludedIngredientIds()
     {
         return excludedIngredientIds;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Session{" +
+            "id=" + id +
+            ", createdAt=" + createdAt +
+            ", events=" + events +
+            ", recipeId=" + recipeId +
+            ", timeoutAt=" + timeoutAt +
+            ", excludedIngredientIds=" + excludedIngredientIds +
+            '}';
     }
 }
