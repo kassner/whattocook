@@ -43,6 +43,6 @@ CREATE TABLE session_event (
 
 CREATE SEQUENCE session_event_id_seq;
 
-INSERT INTO recipe (id, name) VALUES (1, 'Tacos');
-INSERT INTO ingredient (id, name) VALUES (1, 'Tortilla');
-INSERT INTO recipe_ingredients (recipe_id, ingredient_id) VALUES (1, 1);
+INSERT INTO recipe (id, name) VALUES (1, 'Tacos'), (2, 'Lasagna');
+INSERT INTO ingredient (id, name) VALUES (1, 'Tortilla'), (2, 'Ground beef');
+INSERT INTO recipe_ingredients (recipe_id, ingredient_id) VALUES (1, 1), (1, 2), (2, 2);

@@ -28,6 +28,7 @@ dependencies {
 	implementation("org.json:json:20230618")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("com.h2database:h2")
+	testImplementation("org.hamcrest:hamcrest")
 }
 
 tasks.withType<Test> {

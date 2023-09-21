@@ -21,13 +21,11 @@ public class RecipeController
 {
     private final IngredientRepository ingredientRepository;
     private final RecipeRepository recipeRepository;
-    private final SessionService sessionService;
 
-    public RecipeController(IngredientRepository ingredientRepository, RecipeRepository recipeRepository, SessionService sessionService)
+    public RecipeController(IngredientRepository ingredientRepository, RecipeRepository recipeRepository)
     {
         this.ingredientRepository = ingredientRepository;
         this.recipeRepository = recipeRepository;
-        this.sessionService = sessionService;
     }
 
     @GetMapping
@@ -144,10 +142,6 @@ public class RecipeController
     {
         try {
             Recipe recipe = recipeRepository.getReferenceById(id);
-            if (!canDelete(recipe)) {
-                throw new Exception("The recipe cannot be deleted because it is assigned to a session.");
-            }
-
             recipeRepository.delete(recipe);
             redirectAttributes.addFlashAttribute("success", String.format("Recipe %s deleted", recipe.getName()));
         } catch (Exception e) {
@@ -176,15 +170,5 @@ public class RecipeController
         }
 
         return "redirect:/manage/recipe";
-    }
-
-    private boolean canDelete(Recipe recipe)
-    {
-        Session session = sessionService.get();
-        if (session == null) {
-            return true;
-        }
-
-        return !(session.getRecipeId() == recipe.getId());
     }
 }

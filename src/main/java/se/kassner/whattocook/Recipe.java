@@ -7,6 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "recipe", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
+@EntityListeners(RecipeEntityListener.class)
 public class Recipe
 {
     @Id
