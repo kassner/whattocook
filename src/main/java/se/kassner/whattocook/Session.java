@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@EntityListeners(SessionEntityListener.class)
 @Table(name = "session")
 public class Session
 {
@@ -21,6 +20,10 @@ public class Session
     @NonNull
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @OneToMany(targetEntity = SessionEvent.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "session_id")
+    private List<SessionEvent> events;
 
     @Transient
     private Long recipeId;
@@ -62,7 +65,15 @@ public class Session
         return LocalDateTime.now().isAfter(timeoutAt);
     }
 
-    public void applyEvent(SessionEvent event)
+    @PostLoad
+    public void onPostLoad()
+    {
+        for (SessionEvent event : this.events) {
+            this.applyEvent(event);
+        }
+    }
+
+    private void applyEvent(SessionEvent event)
     {
         if (event.getEventType() == SessionEvent.Type.RECIPE_ASSIGN && event.getPayload() != null) {
             JSONObject js = new JSONObject(event.getPayload());
