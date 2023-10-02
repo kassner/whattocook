@@ -86,26 +86,42 @@ h1 {
     }
 
     #ingredients-container {
-        @apply p-4 border border-base-content bg-base-100 rounded-md border-opacity-20;
+        @apply p-4 border border-base-content bg-base-100 rounded-md border-opacity-20 flex flex-col gap-2;
 
-        #ingredients {
-            @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-1 pb-1;
+        ul.selected {
+            @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2;
 
             li {
-                @apply grow;
+                @apply flex flex-row;
 
-                label {
-                    @apply bg-zinc-100 dark:bg-gray-800 join-item input input-bordered flex items-center rounded-r-none;
+                input {
+                    @apply flex-1 p-2 border border-base-content bg-base-100 rounded-md border-opacity-20 rounded-r-none border-r-0;
                 }
 
-                .btn-remove {
-                    @apply btn btn-error rounded-l-none;
+                button[role=remove] {
+                    @apply p-2 border rounded-md border-opacity-20 rounded-l-none bg-red-50 hover:bg-red-200 text-red-950 border-base-content dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-red-200;
                 }
             }
         }
 
-        #ingredient-add {
-            @apply btn btn-sm btn-outline;
+        ul[role=listbox] {
+            @apply border border-solid rounded-md divide-y border-slate-200 dark:divide-gray-900 dark:border-gray-900;
+
+            li {
+                @apply p-2 bg-white text-slate-800 dark:text-base-content dark:bg-gray-800;
+
+                &[aria-selected=true] {
+                    @apply font-bold bg-slate-50 text-slate-950 dark:bg-gray-900 dark:text-slate-200;
+                }
+
+                &:first-of-type {
+                    @apply rounded-t-md;
+                }
+
+                &:last-of-type {
+                    @apply rounded-b-md;
+                }
+            }
         }
     }
 }

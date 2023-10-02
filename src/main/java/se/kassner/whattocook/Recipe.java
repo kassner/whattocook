@@ -3,7 +3,7 @@ package se.kassner.whattocook;
 import jakarta.persistence.*;
 import org.springframework.lang.NonNull;
 
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "recipe", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
@@ -29,13 +29,13 @@ public class Recipe
         inverseJoinColumns = @JoinColumn(name = "ingredient_id", referencedColumnName = "id")
     )
     @OrderBy("name ASC")
-    private Set<Ingredient> ingredients;
+    private List<Ingredient> ingredients;
 
     public Recipe()
     {
     }
 
-    public Recipe(long id, @NonNull String name, String instructions, Set<Ingredient> ingredients)
+    public Recipe(long id, @NonNull String name, String instructions, List<Ingredient> ingredients)
     {
         this.id = id;
         this.name = name;
@@ -59,7 +59,7 @@ public class Recipe
         return instructions;
     }
 
-    public Set<Ingredient> getIngredients()
+    public List<Ingredient> getIngredients()
     {
         return ingredients;
     }
@@ -74,7 +74,7 @@ public class Recipe
         this.instructions = instructions;
     }
 
-    public void setIngredients(Set<Ingredient> ingredients)
+    public void setIngredients(List<Ingredient> ingredients)
     {
         this.ingredients = ingredients;
     }

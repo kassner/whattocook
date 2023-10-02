@@ -1,5 +1,6 @@
 import './main.scss';
-import RecipeForm from './recipe-form';
+import Combobox from '@kassner/combobox';
 
-declare const window: any;
-window.RecipeForm = RecipeForm;
+if (document.getElementById('ingredients-container') != undefined) {
+    new Combobox('#ingredient-add', '#ingredients-list', '#ingredients-selected');
+}

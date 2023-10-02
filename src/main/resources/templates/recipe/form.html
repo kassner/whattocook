@@ -19,18 +19,31 @@
             <dd><textarea th:field="*{instructions}" id="form_instructions" name="instructions"></textarea></dd>
             <span th:if="${#fields.hasErrors('instructions')}" th:errors="*{instructions}">Instructions Error</span>
 
-            <dt><label for="ingredients">Ingredients</label></dt>
+            <dt><label for="ingredient-add">Ingredients</label></dt>
             <dd id="ingredients-container">
-                <ul id="ingredients">
-                    <li th:data-id="${stat.index}" th:each="ingredient, stat : ${recipeForm.getIngredients()}" class="join">
-                        <label th:for="'ingredient_' + ${stat.index}" class="join-item"><span>Ingredient</span></label>
-                        <input type="text" th:id="'ingredient_' + ${stat.index}" name="ingredients[]" th:value="${ingredient}" class="join-item" />
-                        <button type="button" class="join-item btn-remove" onclick="RecipeForm.removeIngredient(this.parentElement)">
+                <ul class="selected" aria-live="polite" id="ingredients-selected">
+                    <li role="listitem" th:each="ingredient : ${recipeForm.ingredients}" th:unless="${recipeForm.ingredients.size() == 0}">
+                        <input type="text" name="ingredients[]" th:value="${ingredient}" />
+                        <button type="button" role="remove">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                         </button>
                     </li>
+                    <template>
+                        <li role="listitem">
+                            <input type="text" name="ingredients[]" value="{{value}}" />
+                            <button type="button" role="remove">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </li>
+                    </template>
                 </ul>
-                <button type="button" id="ingredient-add" onclick="RecipeForm.addIngredient()">Add</button>
+                <input aria-controls="ingredients-list" role="combobox" type="text" id="ingredient-add" placeholder="e.g.: Butternut squash">
+                <ul role="listbox" id="ingredients-list" hidden>
+                    <li role="option" th:each="ingredient : ${ingredients}" th:text="${ingredient}"></li>
+                    <template data-role="create">
+                        <li role="option" data-create="true" data-combobox-option-default="true">Create "{{value}}"</li>
+                    </template>
+                </ul>
             </dd>
         </dl>
         <button type="submit" class="btn-add">Save</button>

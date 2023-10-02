@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import se.kassner.whattocook.*;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/manage/recipe")
@@ -42,6 +41,7 @@ public class RecipeController
     {
         model.addAttribute("form_title", "Add recipe");
         model.addAttribute("form_url", "/manage/recipe/add");
+        model.addAttribute("ingredients", ingredientRepository.findAllNames());
 
         return "recipe/form";
     }
@@ -51,6 +51,7 @@ public class RecipeController
     {
         model.addAttribute("form_title", "Add recipe");
         model.addAttribute("form_url", "/manage/recipe/add");
+        model.addAttribute("ingredients", ingredientRepository.findAllNames());
 
         if (bindingResult.hasErrors()) {
             return "recipe/form";
@@ -79,6 +80,7 @@ public class RecipeController
         model.addAttribute("form_title", String.format("Edit recipe \"%s\"", recipe.getName()));
         model.addAttribute("form_url", String.format("/manage/recipe/%d/edit", recipe.getId()));
         model.addAttribute("recipeForm", recipeForm);
+        model.addAttribute("ingredients", ingredientRepository.findAllNames());
 
         return "recipe/form";
     }
@@ -103,6 +105,7 @@ public class RecipeController
         model.addAttribute("form_title", String.format("Edit recipe \"%s\"", recipe.getName()));
         model.addAttribute("form_url", String.format("/manage/recipe/%d/edit", recipe.getId()));
         model.addAttribute("recipeForm", recipeForm);
+        model.addAttribute("ingredients", ingredientRepository.findAllNames());
 
         if (bindingResult.hasErrors()) {
             return "recipe/form";
@@ -115,9 +118,9 @@ public class RecipeController
         return saveRecipe(recipe, model, redirectAttributes);
     }
 
-    private Set<Ingredient> convertIngredients(String[] ingredientNames)
+    private List<Ingredient> convertIngredients(List<String> ingredientNames)
     {
-        Set<Ingredient> recipeIngredients = new HashSet<>();
+        List<Ingredient> recipeIngredients = new ArrayList<Ingredient>();
 
         for (String ingredientName : ingredientNames) {
             if (ingredientName.isEmpty()) {

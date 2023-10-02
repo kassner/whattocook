@@ -5,9 +5,8 @@ import org.hibernate.validator.constraints.Length;
 import se.kassner.whattocook.Ingredient;
 import se.kassner.whattocook.Recipe;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class RecipeForm
 {
@@ -19,22 +18,18 @@ public class RecipeForm
 
     private String instructions;
 
-    private String[] ingredients = new String[]{""};
+    private List<String> ingredients = new ArrayList<>();
 
     public RecipeForm()
     {
     }
 
-    public RecipeForm(Long id, String name, String instructions, String[] ingredients)
+    public RecipeForm(Long id, String name, String instructions, List<String> ingredients)
     {
         this.id = id;
         this.name = name;
         this.instructions = instructions;
         this.setIngredients(ingredients);
-
-        if (this.ingredients.length == 0) {
-            this.ingredients = new String[]{""};
-        }
     }
 
     public RecipeForm(Recipe recipe)
@@ -42,11 +37,7 @@ public class RecipeForm
         this.id = recipe.getId();
         this.name = recipe.getName();
         this.instructions = recipe.getInstructions();
-        this.ingredients = recipe.getIngredients().stream().map(Ingredient::getName).toArray(String[]::new);
-
-        if (this.ingredients.length == 0) {
-            this.ingredients = new String[]{""};
-        }
+        this.ingredients = recipe.getIngredients().stream().map(Ingredient::getName).toList();
     }
 
     public Long getId()
@@ -64,7 +55,7 @@ public class RecipeForm
         return instructions;
     }
 
-    public String[] getIngredients()
+    public List<String> getIngredients()
     {
         return ingredients;
     }
@@ -84,8 +75,8 @@ public class RecipeForm
         this.instructions = instructions;
     }
 
-    public void setIngredients(String[] ingredients)
+    public void setIngredients(List<String> ingredients)
     {
-        this.ingredients = Arrays.stream(ingredients).map(String::trim).toArray(String[]::new);
+        this.ingredients = ingredients;
     }
 }
