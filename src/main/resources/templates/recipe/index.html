@@ -23,13 +23,24 @@
                 <td th:text="${recipe.getName()}"></td>
                 <td class="actions">
                     <a class="btn-edit" th:href="@{/manage/recipe/{id}/edit(id=${recipe.getId()})}">Edit</a>
-                    <form th:action="@{/manage/recipe/{id}/delete(id=${recipe.getId()})}" method="POST">
+                    <form th:action="@{/manage/recipe/{id}/delete(id=${recipe.getId()})}" method="POST" th:data-recipe-name="${recipe.getName()}">
                         <button class="btn-delete w-full">Delete</button>
                     </form>
                 </td>
             </tr>
         </tbody>
     </table>
+    <script type="text/javascript">
+        document.querySelectorAll('form').forEach((form) => {
+            form.addEventListener('submit', (e) => {
+                const recipe = e.target.attributes.getNamedItem('data-recipe-name').value;
+                const message = `Are you sure you want to delete "${recipe}"?`;
+                if (!confirm(message)) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
 </main>
 </body>
 </html>
