@@ -62,7 +62,8 @@ h1 {
                 line-height: 1rem;
 
                 li {
-                    @apply border-zinc-200 bg-zinc-50 border rounded-md p-1 text-zinc-500;
+                    @apply rounded-md border border-zinc-200 bg-zinc-50 p-1 text-zinc-500 dark:border-zinc-600 dark:bg-zinc-900;
+
                     display: inline-block;
                 }
             }
