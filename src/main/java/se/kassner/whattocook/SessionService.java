@@ -44,11 +44,6 @@ public class SessionService
         return sessionRepository.findById(session.getId()).orElse(null);
     }
 
-    private void refresh(Session session)
-    {
-        entityManager.refresh(session);
-    }
-
     public void createIfNeeded() throws Exception
     {
         Session session = this.get();
@@ -110,11 +105,11 @@ public class SessionService
         SessionEvent ingredientEvent = new SessionEvent(session, SessionEvent.Type.INGREDIENT_EXCLUDE, payload.toString());
         sessionEventRepository.save(ingredientEvent);
 
-        // reload session
-        this.refresh(session);
+        List<Long> excludedIngredients = session.getExcludedIngredientIds();
+        excludedIngredients.add(ingredient.getId());
 
         // assign new recipe
-        Recipe recipe = recipeRepository.findOneRandomWithoutIngredients(session.getExcludedIngredientIds());
+        Recipe recipe = recipeRepository.findOneRandomWithoutIngredients(excludedIngredients);
 
         if (recipe == null) {
             // @TODO no more recipes available. save event?
