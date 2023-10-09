@@ -20,7 +20,12 @@
         <tbody>
             <tr th:each="recipe: ${recipes}">
                 <td th:text="${recipe.getId()}"></td>
-                <td th:text="${recipe.getName()}"></td>
+                <td class="name">
+                    <p th:text="${recipe.getName()}"></p>
+                    <ul>
+                        <li th:each="ingredient: ${recipe.getIngredients()}" th:text="${ingredient.getName()}"></li>
+                    </ul>
+                </td>
                 <td class="actions">
                     <a class="btn-edit" th:href="@{/manage/recipe/{id}/edit(id=${recipe.getId()})}">Edit</a>
                     <form th:action="@{/manage/recipe/{id}/delete(id=${recipe.getId()})}" method="POST" th:data-recipe-name="${recipe.getName()}">

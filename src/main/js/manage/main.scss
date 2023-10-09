@@ -46,6 +46,28 @@ h1 {
             @apply hover:bg-zinc-100 dark:hover:bg-gray-800;
         }
 
+        td.name {
+            p {
+                font-size: 1rem;
+                font-weight: bold;
+            }
+
+            ul {
+                margin-top: 5px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 3px;
+
+                font-size: 0.75rem;
+                line-height: 1rem;
+
+                li {
+                    @apply border-zinc-200 bg-zinc-50 border rounded-md p-1 text-zinc-500;
+                    display: inline-block;
+                }
+            }
+        }
+
         td.actions {
             @apply flex flex-col space-y-1 sm:flex-row sm:space-x-2 sm:space-y-0;
 
