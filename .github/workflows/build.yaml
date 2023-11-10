@@ -31,6 +31,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: docker buildx build --push --platform=linux/amd64 -t "ghcr.io/${{ github.repository }}:arm64" .
-
-      - run: docker buildx build --push --platform=linux/arm64/v8 -t "ghcr.io/${{ github.repository }}:arm64" .
+      - uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: "ghcr.io/${{ github.repository }}:arm64"
