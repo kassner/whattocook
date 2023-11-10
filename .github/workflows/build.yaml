@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - arm64
 
 jobs:
   test_and_build:
@@ -40,4 +39,4 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: "ghcr.io/${{ github.repository }}:arm64"
+          tags: "ghcr.io/${{ github.repository }}:dev"
