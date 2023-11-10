@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - arm64
 
 jobs:
   test_and_build:
@@ -22,7 +23,7 @@ jobs:
 
       - run: ./gradlew test --no-daemon
 
-      - run: ./gradlew -P version=dev bootBuildImage --no-daemon --imageName="ghcr.io/${{ github.repository }}:dev"
+      - run: ./gradlew bootJar
 
       - uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
@@ -30,4 +31,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: docker push ghcr.io/${{ github.repository }}:dev
+      - run: docker buildx build --push --platform=linux/amd64 -t "ghcr.io/${{ github.repository }}:arm64" .
+
+      - run: docker buildx build --push --platform=linux/arm64/v8 -t "ghcr.io/${{ github.repository }}:arm64" .
