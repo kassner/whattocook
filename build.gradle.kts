@@ -25,7 +25,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.springframework.session:spring-session-core")
-	implementation("org.json:json:20230618")
+	implementation("org.json:json:20240303")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("com.h2database:h2")
 	testImplementation("org.hamcrest:hamcrest")
