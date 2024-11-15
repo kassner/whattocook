@@ -1,18 +1,21 @@
-version: '3.9'
-
 services:
   app:
-    image: ghcr.io/kassner/whattocook:0.3.0
+    image: ghcr.io/kassner/whattocook:0.4.0
     ports:
-      - "127.0.0.1:12393:8080"
+      - "12393:8080"
     environment:
       SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/whattocook"
       SPRING_DATASOURCE_USERNAME: whattocook
       SPRING_DATASOURCE_PASSWORD: admin123
 
   postgres:
-    image: postgres:15
+    image: postgres:17
     environment:
       POSTGRES_DB: whattocook
       POSTGRES_USER: whattocook
       POSTGRES_PASSWORD: admin123
+    volumes:
+      - pgdata:/var/lib/postgres/data
+
+volumes:
+  pgdata:
