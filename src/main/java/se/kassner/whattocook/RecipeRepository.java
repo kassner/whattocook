@@ -21,4 +21,10 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long>
 
     @Query("SELECT r FROM Recipe r ORDER BY r.name ASC")
     public List<Recipe> findAllForListing();
+
+    @Query(
+            value = "SELECT r.* FROM recipe r WHERE r.id IN (SELECT ri.recipe_id FROM recipe_ingredients ri WHERE ri.ingredient_id IN (:ingredient_ids))",
+            nativeQuery = true
+    )
+    public List<Recipe> findAllForListingWithIngredients(@Param("ingredient_ids") List<Long> includedIngredientIds);
 }

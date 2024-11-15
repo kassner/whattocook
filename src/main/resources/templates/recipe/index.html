@@ -9,6 +9,10 @@
         <h1 class="flex-grow">Manage recipes</h1>
         <a class="btn-add self-center" th:href="@{/manage/recipe/add}">Add</a>
     </div>
+    <div class="filters" th:if="${ingredient != null}">
+        <p th:text="'Filtering by ingredient: ' + ${ingredient.getName()}" />
+        <a class="btn-clear self-center" th:href="@{/manage/recipe}">Clear</a>
+    </div>
     <table class="table table-pin-rows table-pin-cols w-full">
         <thead>
             <tr>
@@ -23,7 +27,9 @@
                 <td class="name">
                     <p th:text="${recipe.getName()}"></p>
                     <ul>
-                        <li th:each="ingredient: ${recipe.getIngredients()}" th:text="${ingredient.getName()}"></li>
+                        <li th:each="ingredient: ${recipe.getIngredients()}">
+                            <a th:href="@{/manage/recipe(ingredient=${ingredient.getId()})}" th:text="${ingredient.getName()}" />
+                        </li>
                     </ul>
                 </td>
                 <td class="actions">

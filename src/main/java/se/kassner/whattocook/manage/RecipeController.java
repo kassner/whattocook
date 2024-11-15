@@ -12,7 +12,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import se.kassner.whattocook.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/manage/recipe")
@@ -28,9 +30,18 @@ public class RecipeController
     }
 
     @GetMapping
-    public String get(Model model)
+    public String get(Model model, @RequestParam(value = "ingredient", required = false) Long ingredientId)
     {
-        List<Recipe> recipes = recipeRepository.findAllForListing();
+        List<Recipe> recipes;
+
+        if (ingredientId == null || ingredientId == 0) {
+            recipes = recipeRepository.findAllForListing();
+        } else {
+            recipes = recipeRepository.findAllForListingWithIngredients(Collections.singletonList(ingredientId));
+            Optional<Ingredient> ingredient = ingredientRepository.findById(ingredientId);
+            ingredient.ifPresent(value -> model.addAttribute("ingredient", value));
+        }
+
         model.addAttribute("recipes", recipes);
 
         return "recipe/index";

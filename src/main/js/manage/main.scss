@@ -18,8 +18,22 @@ h1 {
     @apply btn btn-sm;
 }
 
+.btn-clear {
+    @apply btn btn-sm btn-outline;
+}
+
 .alert {
     @apply mb-8;
+}
+
+.filters {
+    @apply alert;
+
+    margin-bottom: 0.5rem;
+
+    p {
+        line-height: 32px;
+    }
 }
 
 .table {
