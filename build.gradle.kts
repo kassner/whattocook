@@ -2,9 +2,9 @@ import com.github.gradle.node.npm.task.NpxTask
 
 plugins {
 	java
-	id("org.springframework.boot") version "3.1.3"
-	id("io.spring.dependency-management") version "1.1.3"
-	id("com.github.node-gradle.node") version "7.0.0"
+	id("org.springframework.boot") version "3.5.7"
+	id("io.spring.dependency-management") version "1.1.7"
+	id("com.github.node-gradle.node") version "7.1.0"
 }
 
 group = "se.kassner"
@@ -23,9 +23,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("org.flywaydb:flyway-core")
+	implementation("org.flywaydb:flyway-database-postgresql")
 	implementation("org.springframework.session:spring-session-core")
-	implementation("org.json:json:20240303")
+	implementation("org.json:json:20250517")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("com.h2database:h2")
 	testImplementation("org.hamcrest:hamcrest")
