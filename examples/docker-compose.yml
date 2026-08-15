@@ -1,6 +1,6 @@
 services:
   app:
-    image: ghcr.io/kassner/whattocook:0.4.2
+    image: ghcr.io/kassner/whattocook:0.4.3
     ports:
       - "12393:8080"
     environment:
